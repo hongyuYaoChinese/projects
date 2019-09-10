@@ -1,0 +1,40 @@
+server:
+   port: 8888
+   
+spring:
+  application:
+    name: configServer
+  http:
+      encoding:
+          force: true
+          charset: UTF-8
+          enabled: true
+          uri-encoding: UTF-8  
+  security:
+      user:
+         name: yhy
+         password: 123
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/hongyuYaoChinese/configPackage.git
+          username: 18698655352@163.com
+          password: ry19970418!
+  rabbitmq:
+      host: 39.105.108.84
+      port: 5672
+      username: yhy
+      password: ry19970418!
+      
+eureka:
+   instance:
+        leaseRenewalIntervalInSeconds: 10
+        leaseExpirationDurationInSeconds: 30
+        prefer-ip-address: true
+        instance-id: ${spring.cloud.client.ip-address}:${server.port}
+   client:
+       register-with-eureka: true
+       fetch-registry: true
+       serviceUrl:
+         defaultZone: http://yhy:123@39.105.108.84:8761/eureka/,http://yhy:123@39.105.108.84:8762/eureka/
