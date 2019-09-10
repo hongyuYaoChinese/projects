@@ -22,7 +22,7 @@ spring:
           username: 18698655352@163.com
           password: ry19970418!
   rabbitmq:
-      host: 39.105.108.84
+      host: rabbitmqHost
       port: 5672
       username: yhy
       password: ry19970418!
@@ -37,4 +37,4 @@ eureka:
        register-with-eureka: true
        fetch-registry: true
        serviceUrl:
-         defaultZone: http://yhy:123@39.105.108.84:8761/eureka/,http://yhy:123@39.105.108.84:8762/eureka/
+         defaultZone: http://yhy:123@firstRegister:8761/eureka/,http://yhy:123@secondRegister:8762/eureka/
