@@ -3,6 +3,7 @@ server:
 
 eureka:
    instance:
+       hostname: firstRegister
        prefer-ip-address: true
        instance-id: ${spring.cloud.client.ip-address}:${server.port}
        lease-renewal-interval-in-seconds: 3
@@ -11,7 +12,7 @@ eureka:
        register-with-eureka: false
        fetch-registry: false
        serviceUrl:
-            defaultZone: http://yhy:123@localhost:8762/eureka/
+            defaultZone: http://yhy:123@secondRegister:8762/eureka/
    server:
         waitTimeInMsWhenSyncEmpty: 60
         enableSelfPreservation: false
