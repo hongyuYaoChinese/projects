@@ -1,6 +1,7 @@
 ##ignore this file##
-/target/ 
-/.metadata/ 
+/target/
+/.metadata/
+/.mvn/
 
 .classpath
 .project
