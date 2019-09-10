@@ -1,0 +1,28 @@
+server:
+   port: 8888
+   
+spring:
+  application:
+    name: firstConfigServer
+  security:
+      user:
+         name: yhy
+         password: 123
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/hongyuYaoChinese/configPackage.git
+          username: 18698655352@163.com
+          password: ry19970418!
+  rabbitmq:
+      host: 39.105.108.84
+      port: 5672
+      username: yhy
+      password: ry19970418!
+      
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://yhy:123@39.105.108.84:8761/eureka/
+

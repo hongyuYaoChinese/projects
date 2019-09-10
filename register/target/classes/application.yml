@@ -1,0 +1,26 @@
+server:
+  port: 8761
+
+eureka:
+   instance:
+       prefer-ip-address: true
+       instance-id: ${spring.cloud.client.ip-address}:${server.port}
+       lease-renewal-interval-in-seconds: 3
+       lease-expiration-duration-in-seconds: 7
+   client:
+       register-with-eureka: false
+       fetch-registry: false
+       serviceUrl:
+            defaultZone: http://yhy:123@localhost:8762/eureka/
+   server:
+        waitTimeInMsWhenSyncEmpty: 60
+        enableSelfPreservation: false
+        eviction-interval-timer-in-ms: 3000
+  
+spring:
+   security:
+      user:
+         name: yhy
+         password: 123
+   application:
+         name: register
