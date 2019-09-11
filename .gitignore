@@ -3,6 +3,7 @@
 /.metadata/
 /.mvn/
 /.idea/
+/.recommenders/
 
 .classpath
 .project
