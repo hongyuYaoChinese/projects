@@ -6,3 +6,15 @@ spring:
       label: master
   application:
     name: getway
+security:
+  basic:
+    enabled: false
+  oauth2:
+    client:
+      access-token-uri: http://127.0.0.1:8889/uaa/oauth/token #令牌端点
+      user-authorization-uri: http://localhost:8889/uaa/oauth/authorize #授权端点
+      client-id: zuul_server #OAuth2客户端ID
+      client-secret: secret #OAuth2客户端密钥
+    resource:
+      jwt:
+        key-value: springcloud123
