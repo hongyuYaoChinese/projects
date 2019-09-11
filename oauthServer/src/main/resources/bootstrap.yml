@@ -11,8 +11,15 @@ spring:
           enabled: true
   redis:
     host: redisHost
+    port: 6379
     password: ry19970418!
     database: 0
+    jedis:
+        pool:
+          max-active: 8 # 连接池中的最大连接
+          max-wait: -1ms  # 连接池最大阻塞等待时间（使用负值表示没有限制）
+          max-idle: 8  # 连接池中的最大空闲连接
+          min-idle: 1  # 连接池中的最小空闲连接
   datasource:
       druid:
           url: jdbc:mysql://dataBaseHost:3306/destiny?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useLegacyDatetimeCode=false&allowMultiQueries=true&serverTimezone=Asia/Shanghai&useSSL=false
