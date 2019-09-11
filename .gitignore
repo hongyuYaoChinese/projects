@@ -2,6 +2,7 @@
 /target/
 /.metadata/
 /.mvn/
+/.idea/
 
 .classpath
 .project
