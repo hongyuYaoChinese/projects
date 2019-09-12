@@ -1,7 +1,5 @@
 server:
    port: 8889
-   servlet:
-      contextPath: /uaa
 spring:
   application:
     name: oauthServer
@@ -16,12 +14,12 @@ spring:
     port: 6379
     password: ry19970418!
     database: 0
-  jedis:
-      pool:
-        max-active: 8
-        max-wait: -1ms
-        max-idle: 8
-        min-idle: 1
+    jedis:
+        pool:
+          max-active: 8
+          max-wait: -1ms
+          max-idle: 8
+          min-idle: 1
   datasource:
       druid:
           url: jdbc:mysql://dataBaseHost:3306/destiny?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useLegacyDatetimeCode=false&allowMultiQueries=true&serverTimezone=Asia/Shanghai&useSSL=false

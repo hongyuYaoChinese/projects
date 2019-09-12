@@ -17,4 +17,5 @@ public class GetwayApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(GetwayApplication.class, args);
 	}
+
 }
