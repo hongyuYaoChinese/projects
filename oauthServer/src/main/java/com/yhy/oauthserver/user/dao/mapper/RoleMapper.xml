@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yhy.oauthserver.user.dao.RoleMapper">
+	<resultMap id="BaseResultMap"
+		type="com.yhy.oauthserver.user.pojo.Role">
+		<result column="role_id" jdbcType="VARCHAR" property="roleId" />
+		<result column="role_name" jdbcType="VARCHAR"
+			property="roleName" />
+		<result column="create_time" jdbcType="TIMESTAMP"
+			property="createTime" />
+		<result column="update_time" jdbcType="TIMESTAMP"
+			property="updateTime" />
+		<result column="create_user" jdbcType="VARCHAR"
+			property="createUser" />
+		<result column="update_user" jdbcType="VARCHAR"
+			property="updateUser" />
+	</resultMap>
+	<insert id="insert" parameterType="com.yhy.oauthserver.user.pojo.Role">
+		insert into role (role_id,
+		role_name, create_time,
+		update_time, create_user, update_user
+		)
+		values
+		(#{roleId,jdbcType=VARCHAR}, #{roleName,jdbcType=VARCHAR},
+		#{createTime,jdbcType=TIMESTAMP},
+		#{updateTime,jdbcType=TIMESTAMP},
+		#{createUser,jdbcType=VARCHAR}, #{updateUser,jdbcType=VARCHAR}
+		)
+	</insert>
+	<insert id="insertSelective"
+		parameterType="com.yhy.oauthserver.user.pojo.Role">
+		insert into role
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="roleId != null">
+				role_id,
+			</if>
+			<if test="roleName != null">
+				role_name,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="updateTime != null">
+				update_time,
+			</if>
+			<if test="createUser != null">
+				create_user,
+			</if>
+			<if test="updateUser != null">
+				update_user,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="roleId != null">
+				#{roleId,jdbcType=VARCHAR},
+			</if>
+			<if test="roleName != null">
+				#{roleName,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createUser != null">
+				#{createUser,jdbcType=VARCHAR},
+			</if>
+			<if test="updateUser != null">
+				#{updateUser,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+
+	<select id="getRoleList" resultType="Map">
+		SELECT
+		r.role_name,
+		r.role_id,
+		DATE_FORMAT(r.create_time,'%Y-%c-%d %H:%i:%s') as create_time ,
+		u1.user_name as create_user,
+		DATE_FORMAT(r.update_time,'%Y-%c-%d %H:%i:%s') as update_time,
+		u2.user_name as update_user
+		FROM role AS r
+		LEFT JOIN blog_user AS u1 ON u1.id = r.create_user
+		LEFT JOIN blog_user AS u2 ON u2.id = r.update_user
+		ORDER BY r.create_time DESC
+	</select>
+	<select id="getRoleListByUid" resultType="Map" parameterType="String">
+		SELECT
+		r.role_name,
+		r.role_id,
+		DATE_FORMAT(r.create_time,'%Y-%c-%d %H:%i:%s') as create_time ,
+		u1.user_name as create_user,
+		DATE_FORMAT(r.update_time,'%Y-%c-%d %H:%i:%s') as update_time,
+		u2.user_name as update_user
+		FROM role AS r
+		LEFT JOIN blog_user AS u1 ON u1.id = r.create_user
+		LEFT JOIN blog_user AS u2 ON u2.id = r.update_user
+		LEFT JOIN user_rel_role as urr ON urr.role_id = r.role_id
+	WHERE
+		urr.user_id = #{userId}
+		ORDER BY r.create_time DESC
+	</select>
+	
+	
+
+	<update id="updateRoleName" parameterType="Map">
+		UPDATE role
+		SET role_name = #{roleName},
+		update_time = NOW(),
+		update_user = #{userId}
+		WHERE
+		role_id = #{roleId}
+	</update>
+
+	<delete id="deleteRoleByid" parameterType="String">
+		DELETE
+		FROM
+		role
+		WHERE
+		role_id = #{roleId}
+	</delete>
+
+	<delete id="deleteRoleInfoByid" parameterType="String">
+		DELETE
+		FROM
+		role_rel_model
+		WHERE
+		role_id = #{roleId}
+	</delete>
+	
+	<delete id="deleteRoleUserInfoByid" parameterType="String">
+		DELETE
+		FROM
+		user_rel_role
+		WHERE
+		role_id = #{roleId}
+	</delete>
+
+</mapper>

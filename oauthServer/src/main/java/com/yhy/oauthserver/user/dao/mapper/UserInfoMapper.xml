@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yhy.oauthserver.user.dao.UserInfoMapper">
+  <resultMap id="BaseResultMap" type="com.yhy.oauthserver.user.pojo.UserInfo">
+    <result column="user_info_id" jdbcType="VARCHAR" property="userInfoId" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="qq" jdbcType="VARCHAR" property="qq" />
+    <result column="wechar" jdbcType="VARCHAR" property="wechar" />
+  </resultMap>
+  <insert id="insert" parameterType="com.yhy.oauthserver.user.pojo.UserInfo">
+    insert into user_info (user_info_id, user_id, phone, 
+      qq, wechar)
+    values (#{userInfoId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+      #{qq,jdbcType=VARCHAR}, #{wechar,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yhy.oauthserver.user.pojo.UserInfo">
+    insert into user_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userInfoId != null">
+        user_info_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="qq != null">
+        qq,
+      </if>
+      <if test="wechar != null">
+        wechar,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userInfoId != null">
+        #{userInfoId,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="qq != null">
+        #{qq,jdbcType=VARCHAR},
+      </if>
+      <if test="wechar != null">
+        #{wechar,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <delete id="deleteUser" parameterType="String">
+  		DELETE
+FROM
+	blog_user
+WHERE
+	id = #{userId}
+  </delete>
+  
+  <delete id="deleteUserInfo">
+  		DELETE
+FROM
+	user_info
+WHERE
+	user_id = #{userId}
+  </delete>
+</mapper>

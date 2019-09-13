@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yhy.oauthserver.user.dao.ModelRelUrlMapper">
+  <resultMap id="BaseResultMap" type="com.yhy.oauthserver.user.pojo.ModelRelUrl">
+    <result column="model_rel_url_id" jdbcType="VARCHAR" property="modelRelUrlId" />
+    <result column="model_id" jdbcType="VARCHAR" property="modelId" />
+    <result column="url_id" jdbcType="VARCHAR" property="urlId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="create_user" jdbcType="VARCHAR" property="createUser" />
+    <result column="update_user" jdbcType="VARCHAR" property="updateUser" />
+  </resultMap>
+  <insert id="insert" parameterType="com.yhy.oauthserver.user.pojo.ModelRelUrl">
+    insert into model_rel_url (model_rel_url_id, model_id, url_id, 
+      create_time, update_time, create_user, 
+      update_user)
+    values (#{modelRelUrlId,jdbcType=VARCHAR}, #{modelId,jdbcType=VARCHAR}, #{urlId,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR}, 
+      #{updateUser,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yhy.oauthserver.user.pojo.ModelRelUrl">
+    insert into model_rel_url
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="modelRelUrlId != null">
+        model_rel_url_id,
+      </if>
+      <if test="modelId != null">
+        model_id,
+      </if>
+      <if test="urlId != null">
+        url_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="createUser != null">
+        create_user,
+      </if>
+      <if test="updateUser != null">
+        update_user,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="modelRelUrlId != null">
+        #{modelRelUrlId,jdbcType=VARCHAR},
+      </if>
+      <if test="modelId != null">
+        #{modelId,jdbcType=VARCHAR},
+      </if>
+      <if test="urlId != null">
+        #{urlId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null">
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateUser != null">
+        #{updateUser,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <delete id="deleteInfoByParameter" parameterType="String">
+  	DELETE
+FROM
+	model_rel_url
+WHERE
+	model_id = #{Mid}
+  </delete>
+</mapper>

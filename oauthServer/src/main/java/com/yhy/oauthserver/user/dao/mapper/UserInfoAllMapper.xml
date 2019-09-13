@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yhy.oauthserver.user.dao.UserInfoAllMapper">
+
+	<select id="getUserPermissionByName" resultType="Map"
+		parameterType="String">
+		SELECT
+		r.role_name,m.model_url,url.url
+		FROM
+		blog_user AS u
+		LEFT JOIN user_rel_role AS urr ON u.id = urr.user_id
+		LEFT JOIN role AS r ON r.role_id = urr.role_id
+		LEFT JOIN role_rel_model AS rrm ON rrm.role_id = r.role_id
+		LEFT JOIN system_model AS m ON m.system_model_id = rrm.model_id
+		LEFT JOIN model_rel_url AS mru ON mru.model_id = m.system_model_id
+		LEFT JOIN system_url AS url ON url.system_url_id = mru.url_id
+		WHERE
+		u.user_name = #{userName}
+		AND r.role_name IS NOT NULL
+	</select>
+	
+	<select id="getUserPermissionById" resultType="Map"
+		parameterType="String">
+SELECT
+	r.role_name,
+	r.role_id,
+	r.create_time,
+	u1.user_name as create_user,
+	r.update_time,
+	u2.user_name as update_user
+FROM
+	blog_user AS u
+LEFT JOIN user_rel_role AS urr ON u.id = urr.user_id
+LEFT JOIN role AS r ON r.role_id = urr.role_id
+LEFT JOIN blog_user AS u1 ON u1.id = r.create_user
+LEFT JOIN blog_user AS u2 ON u1.id = r.update_user
+		WHERE
+		u.id = #{userId}
+		AND r.role_name IS NOT NULL
+		ORDER BY r.create_time DESC
+	</select>
+
+	<select id="getUserPermissionStringByName" resultType="String"
+		parameterType="String">
+		SELECT
+		GROUP_CONCAT(r.role_name)
+		FROM
+		blog_user AS u
+		LEFT JOIN user_rel_role AS urr ON u.id = urr.user_id
+		LEFT JOIN role AS r ON r.role_id = urr.role_id
+		WHERE
+		u.user_name = #{userName}
+		GROUP BY u.id
+	</select>
+
+	<select id="getUserPassWordByName" resultType="String"
+		parameterType="String">
+		SELECT
+		u.user_password
+		FROM
+		blog_user AS u
+		WHERE
+		u.user_name = #{userName}
+	</select>
+
+
+	<select id="getUserInfoByName" resultType="map"
+		parameterType="String">
+		SELECT
+		*
+		FROM
+		blog_user AS u
+		LEFT JOIN user_info AS i ON u.id = i.user_id
+		WHERE
+		u.user_name = #{userName}
+	</select>
+
+	<select id="getUserRoleById" resultType="String"
+		parameterType="String">
+		SELECT
+		r.role_name
+		FROM
+		user_rel_role urr
+		LEFT JOIN role r ON r.role_id = urr.role_id
+		WHERE
+		urr.user_id = #{userId}
+	</select>
+
+	<select id="getUserInfoList" resultType="map">
+		SELECT
+	u.id,
+	u.create_time,
+	u.user_name,
+	i.phone,
+	i.qq,
+	i.wechar
+FROM
+	blog_user AS u
+LEFT JOIN user_info AS i ON u.id = i.user_id
+ORDER BY u.create_time DESC
+	</select>
+	
+	<select id="getModelListByRoleId" resultType="Map"
+		parameterType="String">
+		SELECT
+	m.model_name,m.system_model_id
+FROM
+	system_model AS m
+LEFT JOIN role_rel_model AS rrm ON rrm.model_id = m.system_model_id
+WHERE rrm.role_id = #{roleId}
+order by m.create_time desc
+	</select>
+	
+	<select id="getModelList" resultType="Map" parameterType="String">
+SELECT
+	DATE_FORMAT(
+		m.create_time,
+		'%Y-%c-%d %H:%i:%s'
+	) AS create_time,
+	u1.user_name AS create_user,
+	m.model_describe,
+	m.model_name,
+	m.model_url,
+	m.parent_model_id,
+	m.system_model_id,
+	DATE_FORMAT(
+		m.update_time,
+		'%Y-%c-%d %H:%i:%s'
+	) AS update_time,
+	u2.user_name AS update_user
+FROM
+	system_model AS m
+LEFT JOIN blog_user AS u1 ON u1.id = m.create_user
+LEFT JOIN blog_user AS u2 ON u2.id = m.update_user
+ORDER BY
+	m.create_time DESC
+	</select>
+	
+
+</mapper>
