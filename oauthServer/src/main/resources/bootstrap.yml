@@ -1,9 +1,24 @@
 server:
    port: 8889
+   compression: 
+      enabled: true
+      mime-types: application/json,application/xml,text/html,text/xml,text/plain
+      min-response-size: 100
+   
 spring:
   application:
     name: oauthServer
-     
+  mvc:
+     static-path-pattern: /static/**
+  resources:
+     add-mappings: true
+  thymeleaf: 
+     prefix: classpath:/templates/
+     suffix: .html
+     mode: HTML5
+     encoding: UTF-8
+     content-type: text/html
+     cache: false
   http:
       encoding:
           force: true
@@ -40,6 +55,7 @@ spring:
           pool-prepared-statements: false
           max-pool-prepared-statement-per-connection-size: -1
           filters: stat,wall,log4j
+          connection-Properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
           web-stat-filter:
                     enabled: true
                     url-pattern: /*
@@ -54,6 +70,11 @@ spring:
                     loginUsername: admin
                     loginPassword: admin
                     allow: 127.0.0.1,192.168.1.222
+mybatis:
+   mapper-locations: classpath*:com/yhy/oauthserver/**/dao/mapper/*.xml
+   type-aliases-package: com.yhy.oauthserver.*
+   configuration:
+      call-setters-on-nulls: true
 eureka:
    instance:
         leaseRenewalIntervalInSeconds: 10
