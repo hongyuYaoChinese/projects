@@ -15,6 +15,8 @@ import org.springframework.security.oauth2.provider.expression.OAuth2WebSecurity
 import com.yhy.oauthserver.config.security.MyAuthenticationFailureHandler;
 import com.yhy.oauthserver.config.security.MyAuthenticationSuccessHandler;
 
+import javax.servlet.http.HttpServletResponse;
+
 @Configuration
 @EnableWebSecurity
 @EnableResourceServer
@@ -31,13 +33,16 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.formLogin().loginPage("/login").loginProcessingUrl("/authentication/from")
-//				.successHandler(myAuthenticationSuccessHandler)//自定义登录成功处理
-				.failureHandler(myAuthenticationFailureHandler)//自定义登录失败处理
+            // 自定义登录成功处理
+//				.successHandler(myAuthenticationSuccessHandler)
+            // 自定义登录失败处理
+				    .failureHandler(myAuthenticationFailureHandler)
         		.and().authorizeRequests()
-                .antMatchers("/webjars/**", "/druid/**", "/oauth/**", "/static/**", "/login", "/error").permitAll()
-                .anyRequest().access("@myPermissionService.hasPermission(request,authentication)")
-                .and().httpBasic()
-                .and().csrf().disable();
+            .antMatchers("/webjars/**", "/druid/**", "/oauth/**", "/static/**", "/login", "/error").permitAll()
+            .anyRequest().access("@myPermissionService.hasPermission(request,authentication)")
+            .and().httpBasic()
+            .and().csrf().disable().exceptionHandling()
+            .authenticationEntryPoint((request, response, authException) -> response.sendError(HttpServletResponse.SC_UNAUTHORIZED));
     }
 
     @Bean

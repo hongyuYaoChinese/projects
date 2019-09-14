@@ -6,18 +6,39 @@ spring:
       label: master
   application:
     name: getway
-  security:
-    user:
-      password: 123
-      name: yhy
+
 security:
   oauth2:
+    sso:
+          home:
+            secure: true
+            path: /,/**/*.html
     client:
-      access-token-uri: http://127.0.0.1:8889/oauth/token #令牌端点
-      user-authorization-uri: http://localhost:8889/oauth/authorize #授权端点
+      access-token-uri: http://127.0.0.1/oauthserver/oauth/token #令牌端点
+      user-authorization-uri: http://localhost/oauthserver/oauth/authorize #授权端点
       client-id: getway #OAuth2客户端ID
       client-secret: secret #OAuth2客户端密钥
       grant-type: client_credentials
+      scope: server
     resource:
       jwt:
-        key-value: springcloud123
+        key-value: ry19970418!
+
+zuul:
+  ignoredServices: '*'
+  host:
+    connect-timeout-millis: 20000
+    socket-timeout-millis: 20000
+
+  routes:
+    service-auth:
+        path: /oauthserver/**
+        serviceId: oauthServer
+        stripPrefix: false
+        sensitiveHeaders:
+
+    config-server:
+      path: /configserver/**
+      serviceId: configServer
+      stripPrefix: false
+      sensitiveHeaders:

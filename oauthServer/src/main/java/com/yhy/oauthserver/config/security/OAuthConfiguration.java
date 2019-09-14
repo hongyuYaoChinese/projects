@@ -45,7 +45,7 @@ public class OAuthConfiguration extends AuthorizationServerConfigurerAdapter {
         .authorities("WRIGTH_READ", "WRIGTH_WRITE")
         .authorizedGrantTypes("implicit", "client_credentials", "refresh_token", "password", "authorization_code")
         //权限范围
-        .scopes(userService.getUserPermissionStringByName("yhy"))
+        .scopes(userService.getUserPermissionStringByName("yhy"), "server")
         .secret(passwordEncoder().encode("secret"))
         .redirectUris("http://baidu.com");
     }
@@ -95,7 +95,6 @@ public class OAuthConfiguration extends AuthorizationServerConfigurerAdapter {
     DefaultTokenServices tokenServices = new DefaultTokenServices();
     tokenServices.setTokenStore(tokenStore());
     tokenServices.setSupportRefreshToken(true);
-    //tokenServices.setClientDetailsService(clientDetails());
     // token有效期自定义设置，默认12小时
     tokenServices.setAccessTokenValiditySeconds(60*60*12);
     // refresh_token默认30天

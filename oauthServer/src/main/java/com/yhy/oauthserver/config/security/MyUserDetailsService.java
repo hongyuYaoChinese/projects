@@ -25,12 +25,11 @@ public class MyUserDetailsService implements UserDetailsService{
 	
 	@Autowired
 	private IUserService userService;
-	
+
+	@Override
 	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
 		logger.info("login name is "+userName);
 		Map<String, String> userInfo = userService.getUserInfo(userName);
 		return new MyUserPrincipal(userName, userInfo.get("user_password"), true, true, true, true, AuthorityUtils.commaSeparatedStringToAuthorityList(userService.getUserPermissionStringByName(userName)),userInfo);
-//		return new User(userName, userService.getUserPassWordByName(userName), AuthorityUtils.commaSeparatedStringToAuthorityList(userService.getUserPermissionStringByName(userName)));
 	}
-	
 }
