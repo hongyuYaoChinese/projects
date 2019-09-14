@@ -1,10 +1,12 @@
 package com.yhy.oauthserver.config.security;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
@@ -51,9 +53,17 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
         expressionHandler.setApplicationContext(applicationContext);
         return expressionHandler;
     }
-    
+
     @Override
     public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
+        resources.accessDeniedHandler((request,response,e)->{
+            response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+            response.getWriter().write(new ObjectMapper().writeValueAsString("授权失败"));
+        });
+        resources.authenticationEntryPoint((request,response,e)->{
+            response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+            response.getWriter().write(new ObjectMapper().writeValueAsString("token失败"));
+        });
         resources.expressionHandler(expressionHandler);
     }
 }

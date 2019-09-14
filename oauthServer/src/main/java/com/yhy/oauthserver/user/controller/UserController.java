@@ -1,11 +1,13 @@
 package com.yhy.oauthserver.user.controller;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -60,15 +62,15 @@ public class UserController {
 	}
 	
 	@ResponseBody
-	@RequestMapping("/test")
-	public List<Map<String, Object>> test() {
-		return dao.getUserPermissionByName("21");
-	}
-	
-	@ResponseBody
 	@RequestMapping("/getMe")
 	public Object getMe() {
 		MyUserPrincipal principal = (MyUserPrincipal) authenticationService.getAuthentication().getPrincipal();
 		return principal.getUserInfo();
+	}
+
+	@ResponseBody
+	@GetMapping("/userInfo")
+	public Principal user(Principal member) {
+		return member;
 	}
 }

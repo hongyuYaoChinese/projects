@@ -14,8 +14,8 @@ security:
             secure: true
             path: /,/**/*.html
     client:
-      access-token-uri: http://127.0.0.1/oauthserver/oauth/token #令牌端点
-      user-authorization-uri: http://localhost/oauthserver/oauth/authorize #授权端点
+      access-token-uri: http://localhost:8889/oauth/token #令牌端点
+      user-authorization-uri: http://localhost:8889/oauth/authorize #授权端点
       client-id: getway #OAuth2客户端ID
       client-secret: secret #OAuth2客户端密钥
       grant-type: client_credentials
@@ -23,6 +23,8 @@ security:
     resource:
       jwt:
         key-value: ry19970418!
+      user-info-uri: http://localhost:8889/user/userInfo
+      prefer-token-info: false
 
 zuul:
   ignoredServices: '*'

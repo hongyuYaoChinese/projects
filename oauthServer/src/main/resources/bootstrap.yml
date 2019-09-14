@@ -1,5 +1,7 @@
 server:
    port: 8889
+   servlet:
+     context-path: /oauthserver
    compression: 
       enabled: true
       mime-types: application/json,application/xml,text/html,text/xml,text/plain
@@ -85,3 +87,9 @@ eureka:
        fetch-registry: true
        serviceUrl:
          defaultZone: http://yhy:123@firstRegister:8761/eureka/,http://yhy:123@secondRegister:8762/eureka/
+
+security:
+  oauth2:
+    resource:
+      user-info-uri: http://localhost:8889/user/userInfo
+      prefer-token-info: false

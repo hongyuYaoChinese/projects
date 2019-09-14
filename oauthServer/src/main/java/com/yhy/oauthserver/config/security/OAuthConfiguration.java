@@ -44,8 +44,8 @@ public class OAuthConfiguration extends AuthorizationServerConfigurerAdapter {
         .withClient("getway")
         .authorities("WRIGTH_READ", "WRIGTH_WRITE")
         .authorizedGrantTypes("implicit", "client_credentials", "refresh_token", "password", "authorization_code")
-        //权限范围
-        .scopes(userService.getUserPermissionStringByName("yhy"), "server")
+        //权限范围 userService.getUserPermissionStringByName("yhy"),
+        .scopes("server")
         .secret(passwordEncoder().encode("secret"))
         .redirectUris("http://baidu.com");
     }

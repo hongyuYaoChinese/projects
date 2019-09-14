@@ -39,6 +39,9 @@ public class MyPermissionService {
 				}
 			}
 		}
+		if ("getway".equals(principal)) {
+			hasPermission = true;
+		}
 		return hasPermission;
 	}
 }
