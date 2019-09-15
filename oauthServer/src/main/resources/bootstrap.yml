@@ -91,5 +91,4 @@ eureka:
 security:
   oauth2:
     resource:
-      user-info-uri: http://localhost:8889/user/userInfo
-      prefer-token-info: false
+      user-info-uri: http://localhost:8889/oauthserver/user/userInfo
