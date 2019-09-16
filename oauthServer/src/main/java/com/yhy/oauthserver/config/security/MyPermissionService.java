@@ -33,7 +33,7 @@ public class MyPermissionService {
 				String systemUrl = null == permissionMap.get("url")?"":(String) permissionMap.get("url");
 				String url = path+permissionMap.get("model_url")+systemUrl;
 				String shortUrl = path+permissionMap.get("model_url");
-				if (antPathMatcher.match(requestUrl, url)||antPathMatcher.match(requestUrl, shortUrl)) {
+				if (antPathMatcher.match(requestUrl, url)||antPathMatcher.match(requestUrl, shortUrl) || antPathMatcher.match(requestUrl, "/oauthserver/loginOut")) {
 					hasPermission = true;
 					break;
 				}

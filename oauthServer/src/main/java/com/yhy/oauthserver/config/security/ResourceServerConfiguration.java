@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -13,9 +12,6 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.expression.OAuth2WebSecurityExpressionHandler;
-
-import com.yhy.oauthserver.config.security.MyAuthenticationFailureHandler;
-import com.yhy.oauthserver.config.security.MyAuthenticationSuccessHandler;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -25,21 +21,10 @@ import javax.servlet.http.HttpServletResponse;
 public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
     @Autowired
     private OAuth2WebSecurityExpressionHandler expressionHandler;
-    
-    @Autowired
-	private MyAuthenticationSuccessHandler myAuthenticationSuccessHandler;
-	
-	@Autowired
-	private MyAuthenticationFailureHandler myAuthenticationFailureHandler;
-    
+
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http.formLogin().loginPage("/login").loginProcessingUrl("/authentication/from")
-            // 自定义登录成功处理
-//				.successHandler(myAuthenticationSuccessHandler)
-            // 自定义登录失败处理
-				    .failureHandler(myAuthenticationFailureHandler)
-        		.and().authorizeRequests()
+        http.authorizeRequests()
             .antMatchers("/webjars/**", "/druid/**", "/oauth/**", "/static/**", "/login", "/error").permitAll()
             .anyRequest().access("@myPermissionService.hasPermission(request,authentication)")
             .and().httpBasic()
@@ -58,11 +43,11 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
     public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
         resources.accessDeniedHandler((request,response,e)->{
             response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
-            response.getWriter().write(new ObjectMapper().writeValueAsString("授权失败"));
+            response.getWriter().write(new ObjectMapper().writeValueAsString("403"));
         });
         resources.authenticationEntryPoint((request,response,e)->{
             response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
-            response.getWriter().write(new ObjectMapper().writeValueAsString("token失败"));
+            response.getWriter().write(new ObjectMapper().writeValueAsString("401"));
         });
         resources.expressionHandler(expressionHandler);
     }

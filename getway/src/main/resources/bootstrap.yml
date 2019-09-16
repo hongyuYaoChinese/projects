@@ -6,6 +6,21 @@ spring:
       label: master
   application:
     name: getway
+  mvc:
+       static-path-pattern: /static/**
+  resources:
+       add-mappings: true
+  thymeleaf:
+       prefix: classpath:/templates/
+       suffix: .html
+       mode: HTML5
+       encoding: UTF-8
+       cache: false
+  http:
+      encoding:
+            force: true
+            charset: UTF-8
+            enabled: true
 
 security:
   oauth2:
@@ -42,3 +57,14 @@ zuul:
       serviceId: configServer
       stripPrefix: false
       sensitiveHeaders:
+
+ribbon:
+  ReadTimeout: 60000
+  ConnectTimeout: 60000
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 60000

@@ -58,11 +58,6 @@
       <artifactId>jjwt</artifactId>
       <version>0.9.0</version>
     </dependency>
-    <!-- 以thymeleaf的形式渲染页面 -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-thymeleaf</artifactId>
-		</dependency>
   </dependencies>
 
   <dependencyManagement>
