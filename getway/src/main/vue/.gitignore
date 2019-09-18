@@ -1,11 +1,3 @@
-/target/
-/.settings/
-/src/test/
-/src/main/resources/static/static/
-/src/main/resources/static/index.html/
-/src/main/vue/node_modules/
-*.iml
-
 .DS_Store
 node_modules/
 /dist/

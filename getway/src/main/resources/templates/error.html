@@ -1,0 +1,36 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.w3.org/1999/xhtml">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>登陆丨Blog</title>
+<link th:href="@{/static/css/register/style.css}" rel="stylesheet" type="text/css" />
+<body>
+
+<div class="login-container">
+	<h1></h1>
+	<div class="connect">
+		<p>不积跬步,无以至千里;不积小流,无以成江海。</p>
+	</div>
+	
+	<form method="post" id="loginForm">
+		<div>
+			<input type="text" name="username" class="username" placeholder="用户名" autocomplete="off"/>
+		</div>
+		<div>
+			<input type="password" name="password" class="password" placeholder="密码" oncontextmenu="return false" onpaste="return false" />
+		</div>
+		<input type="hidden" name="scope" value="server"/>
+		<input type="hidden" name="grant_type" value="password"/>
+		<p style="color: red;word-wrap: break-word;word-break: break-all;overflow: hidden;" id = "security-message" th:if="${param.error}"th:text="${session.SPRING_SECURITY_LAST_EXCEPTION}"></p>
+		<button id="submit" type="button">登 陆</button>
+	</form>
+</div>
+
+</body>
+<script th:src="@{/static/js/jquery.min.js}"></script>
+<script th:src="@{/static/js/register/common.js}"></script>
+<!--背景图片自动更换-->
+<script th:src="@{/static/js/register/supersized.3.2.7.min.js}"></script>
+<script th:src="@{/static/js/register/supersized-init.js}"></script>
+<!--表单验证-->
+<script th:src="@{/static/js/register/jquery.validate.min.js?var1.14.0}"></script>
+</html>

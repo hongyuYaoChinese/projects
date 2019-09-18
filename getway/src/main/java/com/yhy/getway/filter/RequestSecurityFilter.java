@@ -19,7 +19,7 @@ import java.io.IOException;
 * @Author: yaohongyu
 * @Date: 2019/9/12
 */
-//@Component
+@Component
 public class RequestSecurityFilter extends ZuulFilter {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(RequestSecurityFilter.class);

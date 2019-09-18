@@ -48,13 +48,14 @@
       <artifactId>spring-cloud-netflix-hystrix-stream</artifactId>
     </dependency>
 		<dependency>
-        <groupId>org.springframework.cloud</groupId>
-        <artifactId>spring-cloud-starter-oauth2</artifactId>
-    </dependency>
-		<!-- 以thymeleaf的形式渲染页面 -->
+			<groupId>com.github.ulisesbocchio</groupId>
+			<artifactId>jasypt-spring-boot-starter</artifactId>
+			<version>2.1.2</version>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
