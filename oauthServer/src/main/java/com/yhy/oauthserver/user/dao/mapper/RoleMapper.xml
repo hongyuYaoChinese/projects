@@ -81,8 +81,8 @@
 		DATE_FORMAT(r.update_time,'%Y-%c-%d %H:%i:%s') as update_time,
 		u2.user_name as update_user
 		FROM role AS r
-		LEFT JOIN blog_user AS u1 ON u1.id = r.create_user
-		LEFT JOIN blog_user AS u2 ON u2.id = r.update_user
+		LEFT JOIN t_users AS u1 ON u1.id = r.create_user
+		LEFT JOIN t_users AS u2 ON u2.id = r.update_user
 		ORDER BY r.create_time DESC
 	</select>
 	<select id="getRoleListByUid" resultType="Map" parameterType="String">
@@ -94,8 +94,8 @@
 		DATE_FORMAT(r.update_time,'%Y-%c-%d %H:%i:%s') as update_time,
 		u2.user_name as update_user
 		FROM role AS r
-		LEFT JOIN blog_user AS u1 ON u1.id = r.create_user
-		LEFT JOIN blog_user AS u2 ON u2.id = r.update_user
+		LEFT JOIN t_users AS u1 ON u1.id = r.create_user
+		LEFT JOIN t_users AS u2 ON u2.id = r.update_user
 		LEFT JOIN user_rel_role as urr ON urr.role_id = r.role_id
 	WHERE
 		urr.user_id = #{userId}

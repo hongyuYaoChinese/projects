@@ -29,11 +29,11 @@ SELECT
 	r.update_time,
 	u2.user_name as update_user
 FROM
-	blog_user AS u
+	t_users AS u
 LEFT JOIN user_rel_role AS urr ON u.id = urr.user_id
 LEFT JOIN role AS r ON r.role_id = urr.role_id
-LEFT JOIN blog_user AS u1 ON u1.id = r.create_user
-LEFT JOIN blog_user AS u2 ON u1.id = r.update_user
+LEFT JOIN t_users AS u1 ON u1.id = r.create_user
+LEFT JOIN t_users AS u2 ON u1.id = r.update_user
 		WHERE
 		u.id = #{userId}
 		AND r.role_name IS NOT NULL
@@ -45,7 +45,7 @@ LEFT JOIN blog_user AS u2 ON u1.id = r.update_user
 		SELECT
 		GROUP_CONCAT(r.role_name)
 		FROM
-		blog_user AS u
+		t_users AS u
 		LEFT JOIN user_rel_role AS urr ON u.id = urr.user_id
 		LEFT JOIN role AS r ON r.role_id = urr.role_id
 		WHERE
@@ -58,7 +58,7 @@ LEFT JOIN blog_user AS u2 ON u1.id = r.update_user
 		SELECT
 		u.user_password
 		FROM
-		blog_user AS u
+		t_users AS u
 		WHERE
 		u.user_name = #{userName}
 	</select>
@@ -69,7 +69,7 @@ LEFT JOIN blog_user AS u2 ON u1.id = r.update_user
 		SELECT
 		*
 		FROM
-		blog_user AS u
+		t_users AS u
 		LEFT JOIN user_info AS i ON u.id = i.user_id
 		WHERE
 		u.user_name = #{userName}
@@ -95,7 +95,7 @@ LEFT JOIN blog_user AS u2 ON u1.id = r.update_user
 	i.qq,
 	i.wechar
 FROM
-	blog_user AS u
+	t_users AS u
 LEFT JOIN user_info AS i ON u.id = i.user_id
 ORDER BY u.create_time DESC
 	</select>
@@ -130,8 +130,8 @@ SELECT
 	u2.user_name AS update_user
 FROM
 	system_model AS m
-LEFT JOIN blog_user AS u1 ON u1.id = m.create_user
-LEFT JOIN blog_user AS u2 ON u2.id = m.update_user
+LEFT JOIN t_users AS u1 ON u1.id = m.create_user
+LEFT JOIN t_users AS u2 ON u2.id = m.update_user
 ORDER BY
 	m.create_time DESC
 	</select>

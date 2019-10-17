@@ -85,8 +85,8 @@
 	s.url_describe
 FROM
 	system_url AS s
-LEFT JOIN blog_user AS u1 ON u1.id = s.create_user
-LEFT JOIN blog_user AS u2 ON u2.id = s.update_user
+LEFT JOIN t_users AS u1 ON u1.id = s.create_user
+LEFT JOIN t_users AS u2 ON u2.id = s.update_user
 ORDER BY s.create_time DESC
   </select>
   
@@ -107,8 +107,8 @@ ORDER BY s.create_time DESC
 	s.url_describe
 FROM
 	system_url AS s
-LEFT JOIN blog_user AS u1 ON u1.id = s.create_user
-LEFT JOIN blog_user AS u2 ON u2.id = s.update_user
+LEFT JOIN t_users AS u1 ON u1.id = s.create_user
+LEFT JOIN t_users AS u2 ON u2.id = s.update_user
 LEFT JOIN model_rel_url as mru ON mru.url_id = s.system_url_id
 WHERE mru.model_id = #{Mid}
 ORDER BY s.create_time DESC

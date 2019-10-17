@@ -55,7 +55,7 @@
   <delete id="deleteUser" parameterType="String">
   		DELETE
 FROM
-	blog_user
+	t_users
 WHERE
 	id = #{userId}
   </delete>
