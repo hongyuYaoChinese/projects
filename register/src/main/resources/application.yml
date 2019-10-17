@@ -1,18 +1,17 @@
 server:
-  port: 8761
+  port: 8762
 
 eureka:
    instance:
-       hostname: firstRegister
-       prefer-ip-address: true
-       instance-id: ${spring.cloud.client.ip-address}:${server.port}
+       hostname: secondRegister
+       prefer-ip-address: false
        lease-renewal-interval-in-seconds: 3
        lease-expiration-duration-in-seconds: 7
    client:
        register-with-eureka: false
        fetch-registry: false
        serviceUrl:
-            defaultZone: http://yhy:123@secondRegister:8762/eureka/
+            defaultZone: http://yhy:ry19970418!@firstRegister:8761/eureka/
    server:
         waitTimeInMsWhenSyncEmpty: 60
         enableSelfPreservation: false
@@ -22,6 +21,6 @@ spring:
    security:
       user:
          name: yhy
-         password: 123
+         password: ry19970418!
    application:
-         name: register
+         name: secondRegister

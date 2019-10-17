@@ -13,7 +13,7 @@ spring:
   security:
       user:
          name: yhy
-         password: 123
+         password: ry19970418!
   cloud:
     config:
       server:
@@ -31,10 +31,9 @@ eureka:
    instance:
         leaseRenewalIntervalInSeconds: 10
         leaseExpirationDurationInSeconds: 30
-        prefer-ip-address: true
-        instance-id: ${spring.cloud.client.ip-address}:${server.port}
+        appname: configServer
    client:
        register-with-eureka: true
        fetch-registry: true
        serviceUrl:
-         defaultZone: http://yhy:123@firstRegister:8761/eureka/,http://yhy:123@secondRegister:8762/eureka/
+         defaultZone: http://yhy:ry19970418!@firstRegister:8761/eureka/,http://yhy:ry19970418!@secondRegister:8762/eureka/

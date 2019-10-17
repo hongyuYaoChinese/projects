@@ -1,8 +1,30 @@
 spring:
   cloud:
     config:
-      uri: http://yhy:123@configServer:8888/
+      username: yhy
+      password: ry19970418!
+      uri: http://yhy:ry19970418!@configServer:8888/
       profile: dev
       label: master
+      discovery:
+        enabled: true
+        service-id: configServer
   application:
     name: getway
+
+eureka:
+   instance:
+        leaseRenewalIntervalInSeconds: 10
+        leaseExpirationDurationInSeconds: 30
+   client:
+       serviceUrl:
+         defaultZone: http://yhy:ry19970418!@firstRegister:8761/eureka/,http://yhy:ry19970418!@secondRegister:8762/eureka/
+
+security:
+  oauth2:
+    client:
+      clientId: getway
+      clientSecret: secret
+      accessTokenUri: http://127.0.0.1/oauthserver/oauth/token
+      grant-type: client_credentials
+      scope: server

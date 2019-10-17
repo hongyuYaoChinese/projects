@@ -70,7 +70,7 @@ spring:
                     resetEnable: false
                     loginUsername: admin
                     loginPassword: admin
-                    allow: 127.0.0.1,192.168.1.222
+                    allow: 127.0.0.1,0.0.0.0
 mybatis:
    mapper-locations: classpath*:com/yhy/oauthserver/**/dao/mapper/*.xml
    type-aliases-package: com.yhy.oauthserver.*
@@ -80,15 +80,9 @@ eureka:
    instance:
         leaseRenewalIntervalInSeconds: 10
         leaseExpirationDurationInSeconds: 30
-        prefer-ip-address: true
-        instance-id: ${spring.cloud.client.ip-address}:${server.port}
+        hostname: ${spring.application.name}
    client:
        register-with-eureka: true
        fetch-registry: true
        serviceUrl:
-         defaultZone: http://yhy:123@firstRegister:8761/eureka/,http://yhy:123@secondRegister:8762/eureka/
-
-security:
-  oauth2:
-    resource:
-      user-info-uri: http://localhost:8889/oauthserver/user/userInfo
+         defaultZone: http://yhy:ry19970418!@firstRegister:8761/eureka/,http://yhy:ry19970418!@secondRegister:8762/eureka/
