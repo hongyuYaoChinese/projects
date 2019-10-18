@@ -7,7 +7,7 @@
 		SELECT
 		r.role_name,m.model_url,url.url
 		FROM
-		blog_user AS u
+		t_users AS u
 		LEFT JOIN user_rel_role AS urr ON u.id = urr.user_id
 		LEFT JOIN role AS r ON r.role_id = urr.role_id
 		LEFT JOIN role_rel_model AS rrm ON rrm.role_id = r.role_id

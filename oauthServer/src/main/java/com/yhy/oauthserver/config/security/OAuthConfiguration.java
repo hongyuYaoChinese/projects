@@ -1,9 +1,14 @@
 package com.yhy.oauthserver.config.security;
 
+import com.alibaba.druid.pool.DruidDataSource;
+import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.core.annotation.Order;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,6 +19,11 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.approval.ApprovalStore;
+import org.springframework.security.oauth2.provider.approval.JdbcApprovalStore;
+import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
+import org.springframework.security.oauth2.provider.code.AuthorizationCodeServices;
+import org.springframework.security.oauth2.provider.code.JdbcAuthorizationCodeServices;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
@@ -21,6 +31,10 @@ import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenCo
 import com.yhy.oauthserver.config.RedisTokenStore;
 import com.yhy.oauthserver.user.service.IUserService;
 
+import javax.annotation.Resource;
+import javax.sql.DataSource;
+
+@Order(0)
 @Configuration
 @EnableAuthorizationServer
 public class OAuthConfiguration extends AuthorizationServerConfigurerAdapter {
@@ -36,30 +50,50 @@ public class OAuthConfiguration extends AuthorizationServerConfigurerAdapter {
   
 	@Autowired
 	private IUserService userService;
-	
-	@Override
+
+  @Resource
+  private DataSource dataSource;
+
+  @Bean
+  public JdbcClientDetailsService clientDetailsService(){
+	  return new JdbcClientDetailsService(dataSource);
+  }
+
+  @Bean
+  public ApprovalStore approvalStore(){
+	  return new JdbcApprovalStore(dataSource);
+  }
+
+  @Bean
+  public AuthorizationCodeServices authorizationCodeServices(){
+	  return new JdbcAuthorizationCodeServices(dataSource);
+  }
+  @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        clients
-        .inMemory()
-        .withClient("getway")
-        .authorities("WRIGTH_READ", "WRIGTH_WRITE")
-        .authorizedGrantTypes("implicit", "client_credentials", "refresh_token", "password", "authorization_code")
-        //权限范围 userService.getUserPermissionStringByName("yhy"),
-        .scopes("server")
-        .secret(passwordEncoder().encode("secret"));
+//        clients
+//        .inMemory()
+//        .withClient("getway")
+//        .authorities("WRIGTH_READ", "WRIGTH_WRITE")
+//        .authorizedGrantTypes("implicit", "client_credentials", "refresh_token", "password", "authorization_code")
+//        //权限范围 userService.getUserPermissionStringByName("yhy"),
+//        .scopes("server")
+//        .secret(passwordEncoder().encode("secret"));
+      clients.withClientDetails(clientDetailsService());
     }
 
 	@Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         endpoints
-        .tokenServices(defaultTokenServices())
-        .tokenStore(tokenStore())
-        .accessTokenConverter(jwtTokenConverter())
-        .tokenEnhancer(jwtTokenConverter())
-        .authenticationManager(authenticationManager)
-        .userDetailsService(userDetailsService)
-        .reuseRefreshTokens(true)
-        .allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST);
+            .approvalStore(approvalStore())
+            .authorizationCodeServices(authorizationCodeServices())
+            .tokenServices(defaultTokenServices())
+            .tokenStore(tokenStore())
+            .accessTokenConverter(jwtTokenConverter())
+            .tokenEnhancer(jwtTokenConverter())
+            .authenticationManager(authenticationManager)
+            .userDetailsService(userDetailsService)
+            .reuseRefreshTokens(true)
+            .allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST);
 	}
  
     @Bean
@@ -69,13 +103,18 @@ public class OAuthConfiguration extends AuthorizationServerConfigurerAdapter {
         return converter;
     }
 
+  /**
+  *
+  * 配置授权Token的节点和Token服务
+  */
   @Override
-  //配置授权Token的节点和Token服务
   public void configure(AuthorizationServerSecurityConfigurer oauthServer) {
-    //配置获取Token的策略,允许表单认证，配置之后可通过表单获取Token
+    // 配置获取Token的策略,允许表单认证，配置之后可通过表单获取Token
     oauthServer.realm("oauth2-resources")
-    .tokenKeyAccess("permitAll()") //url:/oauth/token_key,exposes public key for token verification if using JWT tokens
-    .checkTokenAccess("isAuthenticated()") //url:/oauth/check_token allow check token
+    // url:/oauth/token_key,exposes public key for token verification if using JWT tokens
+    .tokenKeyAccess("permitAll()")
+    // url:/oauth/check_token allow check token
+    .checkTokenAccess("isAuthenticated()")
     .allowFormAuthenticationForClients();
   }
 
